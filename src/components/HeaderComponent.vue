@@ -24,7 +24,8 @@
                     <a class="nav-link" href="/items">ItemList</a>
                 </li>
                 <li class="nav-item" v-if="isLogin">
-                    <a class="nav-link" href="/ordercart">MyCart</a>
+                    <!-- getter 함수명을 명시 -->
+                    <a class="nav-link" href="/ordercart">MyCart ({{ getTotalQuantity }})</a>
                 </li>
                 <li class="nav-item" v-if="isLogin">
                     <a class="nav-link" href="/mypage">MyPage</a>
@@ -45,7 +46,19 @@
 </template>
 
 <script>
+// store에 getters 함수를 사용하기 위한 import
+import {mapGetters} from 'vuex'
 export default {
+    
+    computed:{
+        ...mapGetters(['getTotalQuantity'])
+        // ...연산자를 통해 getter를 통해 반환되는 객체의 속성들을 현재 객체 내에 풀어서(spread) 넣기 위함 
+        // 아래 함수를 가죠오는 것
+        //  아래함수를 현재 컴포넌트로 가져오는것
+        // getTotalQuantity: function(){
+        //     return this.$store.getTotalQuantity;
+        // }
+    },
    data(){
         return{
             isLogin: false,

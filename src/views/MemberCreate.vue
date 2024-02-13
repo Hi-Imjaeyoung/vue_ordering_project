@@ -53,7 +53,7 @@ export default {
         async memberCreate(){
             try {
                 const createData = {name:this.name,email:this.email,password:this.password,city:this.city,street:this.street,zipcode:this.zipcode};
-                await axios.post("http://localhost:8080/member/create",createData);
+                await axios.post(`${process.env.VUE_APP_API_BASE_URL}/member/create`,createData);
                 // window.location.href="/";
                 this.$router.push({name : 'DoLogin'});
             } catch (error) {

@@ -25,7 +25,7 @@
                                 <th> name </th>
                                 <th> count </th>
                             <tr v-for="orderItem in order.orderItems" :key="orderItem.id">
-                               <td>{{ orderItem.itemName }} {{ orderItem.count }}</td>
+                               <td>{{ orderItem.itemName }}</td>
                                <td>{{ orderItem.count }}</td>
                             </tr>
                         </table>
@@ -51,7 +51,7 @@ export default {
         try{
             const token = localStorage.getItem('token');
             const headers = token ? {Authorization: `Bearer ${token}`}:{};
-            const response = await axios.get(this.apiUrl,{headers});
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}${this.apiUrl}`,{headers});
             this.orderList = response.data;
         }catch(error){
             console.log(error);
@@ -70,7 +70,7 @@ export default {
             try{
                 const token = localStorage.getItem('token');
                 const headers = token ? {Authorization: `Bearer ${token}`}:{};
-                await axios.delete(`http://localhost:8080/order/${orderId}/cancel`,{headers});
+                await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/order/${orderId}/cancel`,{headers});
                 const order = this.orderList.find(order => order.id === orderId);
                 order.orderStatus = "CANCELED";
                 // window.location.reload();

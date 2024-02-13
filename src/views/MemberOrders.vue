@@ -1,7 +1,7 @@
 <template>
     <OrderListComponent
     :isAdmin="true"
-    :apiUrl ="`http://localhost:8080/member/${id}/orders`"
+    :apiUrl ="`/member/${id}/orders`"
     />
 </template>
 

@@ -29,7 +29,8 @@ export default {
     data(){
         return{
             email : "",
-            password : ""
+            password : "",
+            url:"",
         }
     },
     methods:{
@@ -39,7 +40,7 @@ export default {
             // 2. 200번대 상태값이 아닌경우 (비정상)
             try {
                 const loginData = {email:this.email,password:this.password};
-                const response = await axios.post("http://localhost:8080/doLogin",loginData);
+                const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/doLogin`,loginData);
                 const token = response.data.result.token;
                 if(token){
                     const decoded = jwtDecode(token);

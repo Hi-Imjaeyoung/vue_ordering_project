@@ -10,7 +10,6 @@
       }
     },
     created(){
-
     },
     methods:{
 

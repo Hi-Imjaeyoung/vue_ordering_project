@@ -9,15 +9,28 @@
     <input type="text" v-model="inputvalue2"/>
     <!-- onclick과 같은게 @ 클릭이다 -->
     <button @click="showValue()">변수 변경사항 확인</button>
+    <div>
+        <h2>카운트 값 출력</h2>
+        <button @click="increa()">icvreament</button>
+    </div>
+    <!-- <div>
+        <h2>더블 카운트 값 출력</h2>
+        <button @click="increa()">icvreament</button>
+    </div> -->
 </template>
   
   <script>
   export default {
+    // 종속된 반응영 데이터가 변겨오딜때만 함수ㅜ를 다시 실행하여 값을 변경하는 계산 함수다
+    // computed:{
+        
+    // },
     data(){
       return{
         MyLang:"똠양꿍",
         inputvalue1:"쌀국수",
         inputvalue2:"팟타이",
+        count : 0,
       }
     },
     // vue 생명주기에서 인스턴스가 생성되는 시점을 created라고 하고, 화면이 열리기전에 실행되는 함수이다.
@@ -28,6 +41,9 @@
     methods:{
       showValue(){
         alert(this.inputvalue2);
+      },
+      increa(){
+        this.count++;
       }
     }
   }

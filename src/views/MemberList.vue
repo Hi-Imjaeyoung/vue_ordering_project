@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-    <div class="page-header text-center" style="margin-top: 20px"><h1>회원 목록</h1></div>
+    <div class="page-header text-center" style="margin-top: 20px"><h1>Member List</h1></div>
     <table class="table">
         <thead>
         <tr>
@@ -36,7 +36,7 @@ export default {
         try{
             const token = localStorage.getItem('token');
             const headers = token ? {Authorization: `Bearer ${token}`}:{};
-            const response = await axios.get("http://localhost:8080/members",{headers});
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/members`,{headers});
             this.memberList = response.data;
         }catch(error){
             console.log(error);
