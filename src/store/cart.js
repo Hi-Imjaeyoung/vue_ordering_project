@@ -10,6 +10,7 @@ import {createStore} from 'vuex';
 // 초기화, 리턴
 function initState(){
     return{
+        // 담는 부분
         cartItem: JSON.parse(localStorage.getItem('cartItems')) || [],
         totalQuantity: localStorage.getItem('totalQuantity') || 0    
     }
@@ -29,15 +30,34 @@ export default createStore({
     mutations:{
         // addToCart함수는 외부컴포넌트 또는 액션에서 호출
         addToCart(state,item){
-            const existItem = state.cartItems.find(i => i.id === item.id);
+            const existItem = state.cartItem.find(i => i.itemId == item.itemId);
             if(existItem){
                 existItem.count += item.count;
             }else{
-                state.cartItems.push(item);
+                state.cartItem.push(item);
             }
             // totalCount
-            state.totalQuantity = state.totalQuantity + item.count;
-            updateLocalStorge(state.cartItems, state.totalQuantity);
+            state.totalQuantity = parseInt(state.totalQuantity) + item.count;
+            updateLocalStorage(state.cartItem, state.totalQuantity);
+        },
+        clearCart(state){
+            state.cartItem = [];
+            state.totalQuantity =0;
+            updateLocalStorage(state.cartItem,state.totalQuantity);
+            //localStorage.removeItem("cartItems");
+            //localStorage.removeItem("totalQuantity");
+            //window.location.reload();
+        }
+    },
+    // actions를 통해 여러 mutationa을 커밋하거나, 비동기 작업을 진행, 일반적으로 component에서 actions의 method를 호출하고
+    // actions에서 mutation 함수를 호출한다.  
+    actions:{
+        // context는 매개변수가 주입이 되고 context 매개변수 안에 state, commit 등이 존재
+        addToCart(context, item){
+            context.commit('addToCart',item);
+        },
+        clearCart(context){
+            context.commit('clearCart');
         }
     },
     // getter : 상태를 반환하는 함수들의 집합

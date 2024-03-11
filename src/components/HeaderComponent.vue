@@ -74,8 +74,10 @@ export default {
    },
    methods: {
         doLogout(){
-            localStorage.removeItem("token");
-            localStorage.removeItem("role");
+            // 쿠키 싹 삭제
+            localStorage.clear();
+            // localStorage.removeItem("token");
+            // localStorage.removeItem("role");
             window.location.reload();
         }
    }, 

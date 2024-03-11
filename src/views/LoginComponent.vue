@@ -41,11 +41,21 @@ export default {
             try {
                 const loginData = {email:this.email,password:this.password};
                 const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/doLogin`,loginData);
+                console.log(response);
                 const token = response.data.result.token;
+                const refreshToken = response.data.result.refreshToken;
                 if(token){
                     const decoded = jwtDecode(token);
                     localStorage.setItem("role",decoded.role)
                     localStorage.setItem("token",token);
+                    // router함수를 통한 화면 전환은 reload를 실행 시키지 않으므로 created함수 호출이 되지 않음.
+                    // this.$router.push("/");
+                }else{
+                    console.log("200 ok but not exist token");
+                    alert("login Faild");
+                }
+                if(refreshToken){
+                    localStorage.setItem("refreshToken",refreshToken);
                     // router함수를 통한 화면 전환은 reload를 실행 시키지 않으므로 created함수 호출이 되지 않음.
                     // this.$router.push("/");
                     window.location.href="/";

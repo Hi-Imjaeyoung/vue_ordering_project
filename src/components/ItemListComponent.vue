@@ -12,7 +12,7 @@
                 <option value="category">category</option>
             </select>
             <input v-model="searchValue" type="text"/>
-            <button @click="changeValue()" type="submit">Find!</button>
+            <button type="submit">Find!</button>
         </form>
         <div v-if="!isAdmin">
             <button @click="addCart" class="btn btn-secondary">Add Cart!</button>
@@ -54,6 +54,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 export default {
     props :['isAdmin', 'pageTitle'],
     data(){
@@ -77,15 +78,27 @@ export default {
         window.addEventListener('scroll',this.scrollPagination)
     },
     methods:{
+        ...mapActions(['addToCart']),
         addCart(){
-            const orderItems = Object.keys(this.selectedItems)
-                                .filter(key=>this.selectedItems[key]==true)
-                                .map(key=> {
-                                    const item =  this.itemList.find(item => item.id == key)
-                                    return {itemId : item.id,name :item.name ,count : item.quantity}
-                                });
-            orderItems.forEach(item => store.commit('addToCart',item)); 
-            this.$store.commit('addToCart',null);
+            if(confirm("add to cart?")){
+                console.log(this.itemList);
+                console.log(this.selectedItems);
+                const orderItems = Object.keys(this.selectedItems)
+                                    .filter(key=>this.selectedItems[key]==true)
+                                    .map(key=> {
+                                        const item =  this.itemList.find(item => item.id == key)
+                                        return {itemId : item.id,name :item.name ,count : item.quantity}
+                                    });
+                if(orderItems.length <1){
+                    alert("뭘 담겠다는 거죠?")
+                    return;
+                }
+                // mutataion 직접 호출 방식
+                // orderItems.forEach(item => this.$store.commit('addToCart',item)); 
+                // actions 호출 방식
+                orderItems.forEach(item => this.$store.dispatch('addToCart',item)); 
+                this.selectedItems = [];
+            }
         },
         // 데이터 들어오는 구조
         // {
@@ -100,6 +113,10 @@ export default {
                                     const item =  this.itemList.find(item => item.id == key)
                                     return {itemId : item.id, count : item.quantity}
                                 });
+            if(orderItems.length <1){
+                alert("뭘 주문 하시겠다는 거죠?")
+                return;
+            }
             const token = localStorage.getItem('token');
             const headers = token ? {Authorization: `Bearer ${token}`}:{};  
             try{
@@ -155,6 +172,7 @@ export default {
         },
         search(){
             this.itemList = [];
+            this.selectedItems = [];
             this.currentPage = 0;
             this.isLastPage =false;
             this.fetchItems();

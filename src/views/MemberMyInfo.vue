@@ -44,7 +44,8 @@ export default {
         async fetchMember(){
             try{
             const token = localStorage.getItem('token');
-            const headers = token ? {Authorization: `Bearer ${token}`}:{};
+            const refreshToken = localStorage.getItem('refreshToken');
+            const headers = token ? {Authorization: `Bearer ${token}`,refreshToken:`${refreshToken}`}:{};
             const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/member/myInfo`,{headers});
             this.member = response.data;
             console.log(this.member);

@@ -50,7 +50,8 @@ export default {
     async created(){
         try{
             const token = localStorage.getItem('token');
-            const headers = token ? {Authorization: `Bearer ${token}`}:{};
+            const refreshToken = localStorage.getItem('refreshToken');
+            const headers = token ? {Authorization: `Bearer ${token}`,refreshToken:`${refreshToken}`}:{};
             const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}${this.apiUrl}`,{headers});
             this.orderList = response.data;
         }catch(error){
@@ -69,7 +70,8 @@ export default {
         if(confirm("정말 취소할거여?")){
             try{
                 const token = localStorage.getItem('token');
-                const headers = token ? {Authorization: `Bearer ${token}`}:{};
+                const refreshToken = localStorage.getItem('refreshToken');
+                const headers = token ? {Authorization: `Bearer ${token}`,refreshToken:`${refreshToken}`}:{};
                 await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/order/${orderId}/cancel`,{headers});
                 const order = this.orderList.find(order => order.id === orderId);
                 order.orderStatus = "CANCELED";
